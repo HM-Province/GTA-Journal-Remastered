@@ -8,7 +8,14 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
     runs-on: windows-latest
+
+    env:
+      Solution_Name: "GTA Journal.sln"
 
     steps:
       - name: Checkout code
@@ -23,13 +30,13 @@ jobs:
         run: 'dotnet restore "GTA Journal.sln"'
 
       - name: Build the project
-        run: 'dotnet build "GTA Journal/GTA Journal.csproj" --configuration Release|x86'
+        run: 'dotnet build "GTA Journal/GTA Journal.csproj" -c Release -p:Platform=x64'
 
       - name: Build the updater
-        run: 'dotnet build "GTA Journal Updater/GTA Journal Updater.csproj" --configuration Release|x86'
+        run: 'dotnet build "GTA Journal Updater/GTA Journal Updater.csproj" -c Release -p:Platform=x64'
 
       - name: Publish the application
-        run: 'dotnet publish "GTA Journal/GTA Journal.csproj" --configuration Release|x86 --output ./output'
+        run: 'dotnet publish "GTA Journal/GTA Journal.csproj" -c Release -p:Platform=x64 --output ./output'
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
