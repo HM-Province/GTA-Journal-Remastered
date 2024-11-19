@@ -16,13 +16,13 @@
         
         <TextBlock Grid.Row="0" Text="Настройки" Style="{StaticResource TitleLargeTextBlockStyle}"></TextBlock>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="0, 30, 0, 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0, 30, 0, 0">
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <ToggleSwitch x:Name="micaToggleSwitch" Header="Тема Mica (Windows 11)" Toggled="MicaToggleSwitch_Toggled" OffContent="Отключена" OnContent="Вы наслаждаетесь красотой" IsOn="False" />
             </StackPanel>
         </Grid>

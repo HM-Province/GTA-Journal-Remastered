@@ -1,0 +1,40 @@
+name: Build WinUI App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore NuGet packages
+        run: 'dotnet restore "GTA Journal.sln"'
+
+      - name: Build the project
+        run: 'dotnet build "GTA Journal/GTA Journal.csproj" --configuration Release'
+
+      - name: Build the updater
+        run: 'dotnet build "GTA Journal Updater/GTA Journal Updater.csproj" --configuration Release'
+
+      - name: Publish the application
+        run: 'dotnet publish "GTA Journal/GTA Journal.csproj" --configuration Release --output ./output'
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: WinUI-App-Test
+          path: ./output
