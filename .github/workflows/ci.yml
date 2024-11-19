@@ -23,13 +23,13 @@ jobs:
         run: 'dotnet restore "GTA Journal.sln"'
 
       - name: Build the project
-        run: 'dotnet build "GTA Journal/GTA Journal.csproj" --configuration Release'
+        run: 'dotnet build "GTA Journal/GTA Journal.csproj" --configuration Release|x86'
 
       - name: Build the updater
-        run: 'dotnet build "GTA Journal Updater/GTA Journal Updater.csproj" --configuration Release'
+        run: 'dotnet build "GTA Journal Updater/GTA Journal Updater.csproj" --configuration Release|x86'
 
       - name: Publish the application
-        run: 'dotnet publish "GTA Journal/GTA Journal.csproj" --configuration Release --output ./output'
+        run: 'dotnet publish "GTA Journal/GTA Journal.csproj" --configuration Release|x86 --output ./output'
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
