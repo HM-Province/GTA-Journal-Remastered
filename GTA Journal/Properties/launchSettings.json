@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GTA Journal (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "GTA Journal (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

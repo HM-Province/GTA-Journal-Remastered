@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="GTA_Journal.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GTA_Journal"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <NavigationView x:Name="navigationView"
+                    SelectionChanged="navigationView_SelectionChanged"
+                        PaneDisplayMode="Left"
+                        IsSettingsVisible="False" PaneTitle="Adolf_Hitler" IsBackButtonVisible="Collapsed">
+
+        <NavigationView.MenuItems>
+            <NavigationViewItem Content="Статус" Tag="HomePage" Icon="Home" />
+            <NavigationViewItem Content="Топ 10" Tag="TopPage" Icon="ThreeBars" />
+            <NavigationViewItem Content="Статистика" Tag="StatsPage" Icon="Clock" />
+
+            <NavigationViewItem Content="Управление" Icon="Manage" SelectsOnInvoked="False">
+                <NavigationViewItem.MenuItems>
+                    <NavigationViewItem Content="Создать пользователя" Tag="CreateUserPage" Icon="AddFriend" />
+                    <NavigationViewItem Content="Настройки журнала" Tag="JournalSettingsPage" Icon="Setting" />
+                </NavigationViewItem.MenuItems>
+            </NavigationViewItem>
+        </NavigationView.MenuItems>
+        <NavigationView.FooterMenuItems>
+            <NavigationViewItem Content="Аккаунты" Tag="AccountsPage" Icon="Contact" />
+            <NavigationViewItem Content="Настройки" Tag="SettingsPage" Icon="Setting" />
+        </NavigationView.FooterMenuItems>
+
+        <Frame x:Name="contentFrame" />
+    </NavigationView>
+</Page>

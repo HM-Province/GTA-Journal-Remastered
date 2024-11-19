@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTA Journal", "GTA Journal\GTA Journal.csproj", "{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTA Journal Updater", "GTA Journal Updater\GTA Journal Updater.csproj", "{285A6837-00D2-438C-9893-DACD707C9076}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|Any CPU.Build.0 = Debug|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|ARM64.Build.0 = Debug|ARM64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|x64.ActiveCfg = Debug|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|x64.Build.0 = Debug|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|x64.Deploy.0 = Debug|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|x86.ActiveCfg = Debug|x86
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|x86.Build.0 = Debug|x86
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Debug|x86.Deploy.0 = Debug|x86
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|Any CPU.ActiveCfg = Release|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|Any CPU.Build.0 = Release|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|ARM64.ActiveCfg = Release|ARM64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|ARM64.Build.0 = Release|ARM64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|ARM64.Deploy.0 = Release|ARM64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|x64.ActiveCfg = Release|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|x64.Build.0 = Release|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|x64.Deploy.0 = Release|x64
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|x86.ActiveCfg = Release|x86
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|x86.Build.0 = Release|x86
+		{9ECDF9C2-9788-4227-A2E2-CE308FB80E67}.Release|x86.Deploy.0 = Release|x86
+		{285A6837-00D2-438C-9893-DACD707C9076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Debug|x64.Build.0 = Debug|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Debug|x86.Build.0 = Debug|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Release|ARM64.Build.0 = Release|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Release|x64.ActiveCfg = Release|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Release|x64.Build.0 = Release|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Release|x86.ActiveCfg = Release|Any CPU
+		{285A6837-00D2-438C-9893-DACD707C9076}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B9A823AC-FC87-4218-9FFF-6D3CD1F011DE}
+	EndGlobalSection
+EndGlobal
