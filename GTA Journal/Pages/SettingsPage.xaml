@@ -8,7 +8,23 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="Настройки" Style="{StaticResource TitleLargeTextBlockStyle}"></TextBlock>
+    <Grid Margin="20, 20, 20, 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Text="Настройки" Style="{StaticResource TitleLargeTextBlockStyle}"></TextBlock>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0, 30, 0, 0">
+                <ToggleSwitch x:Name="micaToggleSwitch" Header="Тема Mica (Windows 11)" Toggled="MicaToggleSwitch_Toggled" OffContent="Отключена" OnContent="Вы наслаждаетесь красотой" IsOn="False" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

@@ -1,5 +1,6 @@
 ﻿using GTA_Journal.Database;
 using GTA_Journal.Models;
+using GTA_Journal.Repositories;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -36,6 +37,7 @@ namespace GTA_Journal
         public App()
         {
             this.InitializeComponent();
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
 
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
@@ -47,19 +49,17 @@ namespace GTA_Journal
                 .WriteTo.File(System.IO.Path.Join(logPath, $"log-{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}.log"))
                 .CreateLogger();
 
-            Log.Information("Application started");
+            SettingsRepository.InitializeRepository();
+            DataAccess.InitializeDatabase();
 
             notificationManager = new NotificationManager();
-            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
+
+            Log.Information("Application ready to render");
         }
 
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             m_window = new MainWindow();
-
-            DataAccess.InitializeDatabase();
-
-            DataAccess.GetUsers();
 
             notificationManager.Init();
 

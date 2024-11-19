@@ -1,3 +1,5 @@
+using GTA_Journal.Models;
+using GTA_Journal.Repositories;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -10,6 +12,7 @@ using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -33,15 +36,30 @@ namespace GTA_Journal
         {
             this.InitializeComponent();
 
-            if (Microsoft.UI.Composition.SystemBackdrops.MicaController.IsSupported())
-            {
-                this.SystemBackdrop = new MicaBackdrop()
-                {
-                    Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.Base
-                };
-            }
+            (App.Current as App).GlobalState.PropertyChanged += OnGlobalStateChanged;
+            (App.Current as App).GlobalState.UseMicaTheme = SettingsRepository.GetSettings().UseMicaStyle;
 
             rootFrame.Navigate(typeof(MainPage), rootFrame);
+        }
+
+        private void OnGlobalStateChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "UseMicaTheme")
+            {
+                var modelValue = (App.Current as App).GlobalState;
+
+                if (Microsoft.UI.Composition.SystemBackdrops.MicaController.IsSupported() && modelValue.UseMicaTheme)
+                {
+                    this.SystemBackdrop = new MicaBackdrop()
+                    {
+                        Kind = Microsoft.UI.Composition.SystemBackdrops.MicaKind.Base
+                    };
+                } 
+                else
+                {
+                    this.SystemBackdrop = null;
+                }
+            }
         }
     }
 }

@@ -22,6 +22,13 @@ namespace GTA_Journal.Models
             set {  _currentUserStatus = value; OnPropertyChanged(); }
         }
 
+        private bool _useMicaTheme = false;
+        public bool UseMicaTheme
+        {
+            get => _useMicaTheme;
+            set { _useMicaTheme = value; OnPropertyChanged(); }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

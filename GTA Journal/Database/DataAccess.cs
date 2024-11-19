@@ -47,7 +47,8 @@ namespace GTA_Journal.Database
                 Log.Information("Database initialized");
             } catch (Exception ex)
             {
-                Log.Error(ex, "Failed to initialize database");
+                Log.Fatal(ex, "Failed to initialize database");
+                Environment.Exit(1);
             }
         }
 
