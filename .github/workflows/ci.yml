@@ -52,41 +52,42 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: App-Out-${{ matrix.platform }}
+          retention-days: 1
           path: ./output
-
-      # - name: Compile .ISS to .EXE Installer
-      #   uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
-      #   with:
-      #     path: setup.iss
-      #     options: /O+
 
       # - name: Collect app version
       #   id: appversion
       #   run: |
       #     .\getversion.ps1 >> $GITHUB_OUTPUT
 
-      # - name: Rename installer
-      #   env:
-      #     Platform: ${{ matrix.platform }}
-      #   run: |
-      #     Rename-Item "GTAJournalInstaller.exe" -NewName "Setup ($env:Platform).exe”
+  publish-zip:
+    needs: [build]
 
-      # - name: Upload GitHub release
-      #   id: ghupl
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     draft: true
-      #     tag_name: ${{ steps.appversion.outputs.version }}
-      #     files: Setup (${{ matrix.platform }}).exe
+    strategy:
+      matrix:
+        platform: [x86, x64]
 
-  # publish-zip:
-  #   needs: [build]
+    runs-on: windows-latest
 
-  #   strategy:
-  #     matrix:
-  #       platform: [x86, x64]
+    steps:
+      - name: Download builded app
+        uses: actions/download-artifact@v4
+        with:
+          name: App-Out-${{ matrix.platform }}
+          path: ./app
 
-  #   runs-on: windows-latest
+      - name: Compress app binaries
+        env:
+          Platform: ${{ matrix.platform }}
+        run: |
+          Compress-Archive -Path app\* -DestinationPath "GTA Journal ($env:Platform).zip" -CompressionLevel Optimal
+
+      - name: Upload GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          tag_name: main-action-out
+          files: GTA Journal (${{ matrix.platform }}).zip
 
   publish-installer:
     needs: [build]
@@ -107,5 +108,21 @@ jobs:
           name: App-Out-${{ matrix.platform }}
           path: ./app
 
-      - name: Print content
-        run: ls app
+      - name: Compile .ISS to .EXE Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+        with:
+          path: setup.iss
+          options: /O+
+
+      - name: Rename installer
+        env:
+          Platform: ${{ matrix.platform }}
+        run: |
+          Rename-Item "GTAJournalInstaller.exe" -NewName "Setup ($env:Platform).exe”
+
+      - name: Upload GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          tag_name: main-action-out
+          files: Setup (${{ matrix.platform }}).exe

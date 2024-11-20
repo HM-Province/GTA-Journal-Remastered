@@ -10,7 +10,7 @@ SolidCompression=yes
 
 [Files]
 ; Укажите файлы, которые нужно включить в установщик
-Source: "output\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 
 [Icons]
 ; Создание ярлыков
