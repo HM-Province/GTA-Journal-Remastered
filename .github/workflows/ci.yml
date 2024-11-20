@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: ["master"]
 
+permissions:
+  packages: write
+  contents: write
+
 jobs:
   build:
     strategy:
@@ -51,21 +55,20 @@ jobs:
           options: /O+
 
       - name: Collect app version
+        id: appversion
         run: |
-          '.\getversion.ps1 >> >> $env:GITHUB_ENV'
+          .\getversion.ps1 >> $GITHUB_OUTPUT
 
-      - name: Use captured output
+      - name: Rename installer
+        env:
+          Platform: ${{ matrix.platform }}
         run: |
-          echo "Captured version: $env:JOURNAL_VERSION"
+          Rename-Item "GTAJournalInstaller.exe" -NewName "Setup ($env:Platform).exe”
 
-      - name: Upload output artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload GitHub release
+        id: ghupl
+        uses: softprops/action-gh-release@v2
         with:
-          name: WinUI-App-Output (${{ matrix.platform }})
-          path: ./output
-
-      - name: Upload installer artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: WinUI-App-Installer (${{ matrix.platform }})
-          path: ./GTAJournalInstaller.exe
+          draft: true
+          tag_name: ${{ steps.appversion.outputs.version }}
+          files: Setup (${{ matrix.platform }}).exe

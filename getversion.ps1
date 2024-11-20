@@ -4,7 +4,7 @@ $appVersionLine = Select-String -Path $filePath -Pattern "AppVersion=" | ForEach
 
 if ($appVersionLine) {
     $appVersion = $appVersionLine -replace "AppVersion=", ""
-    Write-Output "JOURNAL_VERSION=$appVersion"
+    Write-Output "version=$appVersion"
 } else {
-    Write-Output "JOURNAL_VERSION=0.0.0"
+    Write-Output "version=0.0.0"
 }
