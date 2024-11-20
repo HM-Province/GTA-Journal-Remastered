@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        configuration: [Release]
+        platform: [x86, x64]
 
     runs-on: windows-latest
 
@@ -30,13 +30,19 @@ jobs:
         run: 'dotnet restore "GTA Journal.sln"'
 
       - name: Build the project
-        run: 'dotnet build "GTA Journal/GTA Journal.csproj" -c Release -p:Platform=x64'
+        run: 'dotnet build "GTA Journal/GTA Journal.csproj" -c Release -p:Platform=$env:Platform'
+        env:
+          Platform: ${{ matrix.platform }}
 
       - name: Build the updater
-        run: 'dotnet build "GTA Journal Updater/GTA Journal Updater.csproj" -c Release -p:Platform=x64'
+        run: 'dotnet build "GTA Journal Updater/GTA Journal Updater.csproj" -c Release -p:Platform=$env:Platform'
+        env:
+          Platform: ${{ matrix.platform }}
 
       - name: Publish the application
-        run: 'dotnet publish "GTA Journal/GTA Journal.csproj" -c Release -p:Platform=x64 --output ./output'
+        run: 'dotnet publish "GTA Journal/GTA Journal.csproj" -c Release -p:Platform=$env:Platform --output ./output'
+        env:
+          Platform: ${{ matrix.platform }}
 
       - name: Compile .ISS to .EXE Installer
         uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
@@ -58,11 +64,11 @@ jobs:
       - name: Upload output artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: WinUI-App-Output
+          name: WinUI-App-Output (${{ matrix.platform }})
           path: ./output
 
       - name: Upload installer artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: WinUI-App-Installer
+          name: WinUI-App-Installer (${{ matrix.platform }})
           path: ./GTAJournalInstaller.exe
