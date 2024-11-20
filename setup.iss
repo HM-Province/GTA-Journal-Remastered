@@ -1,6 +1,6 @@
 [Setup]
 AppName=GTA Journal
-AppVersion=0.1.0
+AppVersion=0.1.0-alpha
 DefaultDirName={pf}\GTA Journal
 DefaultGroupName=GTA Journal
 OutputDir=.
@@ -20,3 +20,7 @@ Name: "{commondesktop}\GTA Journal"; Filename: "{app}\GTA Journal.exe"; Tasks: d
 [Tasks]
 ; Задача для создания ярлыка на рабочем столе
 Name: "desktopicon"; Description: "Создать ярлык на рабочем столе"; GroupDescription: "Дополнительно:"; Flags: unchecked
+
+[Languages]
+Name: "en"; MessagesFile: "compiler:Default.isl"
+Name: "ru"; MessagesFile: "compiler:Languages\Russian.isl"

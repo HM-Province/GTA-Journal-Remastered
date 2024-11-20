@@ -50,16 +50,13 @@ jobs:
           path: setup.iss
           options: /O+
 
-      # Проверить!
-      #- name: Download Inno Setup
-      #  run: Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile "InnoSetup.exe"
+      - name: Collect app version
+        run: |
+          '.\getversion.ps1 >> >> $env:GITHUB_ENV'
 
-      #- name: Install Inno Setup
-      #  run: Start-Process -FilePath "InnoSetup.exe" -ArgumentList "/VERYSILENT" -Wait
-
-      #- name: Create Installer
-      #  run: |
-      #    "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
+      - name: Use captured output
+        run: |
+          echo "Captured version: $env:JOURNAL_VERSION"
 
       - name: Upload output artifacts
         uses: actions/upload-artifact@v4
