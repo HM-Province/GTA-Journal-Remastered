@@ -38,16 +38,22 @@ jobs:
       - name: Publish the application
         run: 'dotnet publish "GTA Journal/GTA Journal.csproj" -c Release -p:Platform=x64 --output ./output'
 
+      - name: Compile .ISS to .EXE Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+        with:
+          path: setup.iss
+          options: /O+
+
       # Проверить!
-      - name: Download Inno Setup
-        run: Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile "InnoSetup.exe"
+      #- name: Download Inno Setup
+      #  run: Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile "InnoSetup.exe"
 
-      - name: Install Inno Setup
-        run: Start-Process -FilePath "InnoSetup.exe" -ArgumentList "/VERYSILENT" -Wait
+      #- name: Install Inno Setup
+      #  run: Start-Process -FilePath "InnoSetup.exe" -ArgumentList "/VERYSILENT" -Wait
 
-      - name: Create Installer
-        run: |
-          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
+      #- name: Create Installer
+      #  run: |
+      #    "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
