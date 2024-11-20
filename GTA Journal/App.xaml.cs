@@ -3,24 +3,9 @@ using GTA_Journal.Models;
 using GTA_Journal.Repositories;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
 using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -39,16 +24,7 @@ namespace GTA_Journal
             this.InitializeComponent();
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
 
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            Directory.CreateDirectory(System.IO.Path.Join(path, "GTA Journal/Logs"));
-            var logPath = System.IO.Path.Join(path, "GTA Journal/Logs");
-
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .WriteTo.File(System.IO.Path.Join(logPath, $"log-{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}.log"))
-                .CreateLogger();
-
+            this.InitializeLogger();
             SettingsRepository.InitializeRepository();
             DataAccess.InitializeDatabase();
 
@@ -79,7 +55,30 @@ namespace GTA_Journal
             m_window.Activate();
         }
 
-        void OnProcessExit(object sender, EventArgs e)
+        private void InitializeLogger() {
+            var folder = Environment.SpecialFolder.LocalApplicationData;
+            var path = Environment.GetFolderPath(folder);
+            Directory.CreateDirectory(System.IO.Path.Join(path, "GTA Journal/Logs"));
+            var logPath = System.IO.Path.Join(path, "GTA Journal/Logs");
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File(System.IO.Path.Join(logPath, $"log-{DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss")}.log"))
+                .CreateLogger();
+
+            DirectoryInfo directoryInfo = new DirectoryInfo(logPath);
+            FileInfo[] files = directoryInfo.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                if (file.LastWriteTime < DateTime.Now.AddDays(-3))
+                {
+                    file.Delete();
+                    Log.Information($"Deleted old (3+ days) log: {file.FullName}");
+                }
+            }
+        }
+        private void OnProcessExit(object sender, EventArgs e)
         {
             Log.Information("App stopped");
 

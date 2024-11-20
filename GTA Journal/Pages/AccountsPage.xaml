@@ -12,17 +12,27 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Text="Аккаунты" Style="{StaticResource TitleLargeTextBlockStyle}"></TextBlock>
 
-        <Grid Grid.Row="1" Margin="0, 30, 0, 0">
+        <Button Click="AddAccountButton_Click" Grid.Row="1" Margin="0,10,0,10">Добавить аккаунт</Button>
+        
+        <Grid Grid.Row="2" Margin="0, 10, 0, 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            
+            <ContentDialog x:Name="AddAccountDialog" IsPrimaryButtonEnabled="False" Title="Добавление аккаунта" PrimaryButtonText="Войти" PrimaryButtonStyle="{StaticResource AccentButtonStyle}" CloseButtonText="Закрыть">
+                <StackPanel Margin="0,10,0,0">
+                    <TextBox x:Name="LoginTextBox" TextChanged="AddAccountFields_TextChanged" Header="Логин:" PlaceholderText="Mamut_Bobov" Margin="0,10,0,0"></TextBox>
+                    <PasswordBox x:Name="PasswordTextBox" PasswordChanged="AddAccountFields_TextChanged" Header="Пароль" PlaceholderText="oral_coconut"  Margin="0,20,0,0"></PasswordBox>
+
+                    <CheckBox x:Name="SavePasswordCheckBox" Content="Сохранить пароль (не безопасно)" Margin="0,10,0,0" />
+                </StackPanel>
+            </ContentDialog>
         </Grid>
     </Grid>
 </Page>

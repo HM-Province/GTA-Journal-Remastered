@@ -11,7 +11,7 @@
     <NavigationView x:Name="navigationView"
                     SelectionChanged="navigationView_SelectionChanged"
                         PaneDisplayMode="Left"
-                        IsSettingsVisible="False" PaneTitle="Adolf_Hitler" IsBackButtonVisible="Collapsed">
+                        IsSettingsVisible="False" PaneTitle="GTA Journal" IsBackButtonVisible="Collapsed">
 
         <NavigationView.MenuItems>
             <NavigationViewItem Content="Статус" Tag="HomePage" Icon="Home" />
