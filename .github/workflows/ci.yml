@@ -80,14 +80,13 @@ jobs:
         env:
           Platform: ${{ matrix.platform }}
         run: |
-          Compress-Archive -Path app\* -DestinationPath "GTA Journal ($env:Platform).zip" -CompressionLevel Optimal
+          Compress-Archive -Path app\* -DestinationPath "GTA_Journal_$env:Platform.zip" -CompressionLevel Optimal
 
       - name: Upload GitHub release
         uses: softprops/action-gh-release@v2
         with:
           draft: true
-          tag_name: main-action-out
-          files: GTA Journal (${{ matrix.platform }}).zip
+          files: GTA_Journal_${{ matrix.platform }}.zip
 
   publish-installer:
     needs: [build]
@@ -118,11 +117,10 @@ jobs:
         env:
           Platform: ${{ matrix.platform }}
         run: |
-          Rename-Item "GTAJournalInstaller.exe" -NewName "Setup ($env:Platform).exe”
+          Rename-Item "GTAJournalInstaller.exe" -NewName "Setup_$env:Platform.exe”
 
       - name: Upload GitHub release
         uses: softprops/action-gh-release@v2
         with:
           draft: true
-          tag_name: main-action-out
-          files: Setup (${{ matrix.platform }}).exe
+          files: Setup_${{ matrix.platform }}.exe
