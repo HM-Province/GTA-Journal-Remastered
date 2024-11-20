@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Release]
 
     runs-on: windows-latest
 
@@ -38,8 +38,18 @@ jobs:
       - name: Publish the application
         run: 'dotnet publish "GTA Journal/GTA Journal.csproj" -c Release -p:Platform=x64 --output ./output'
 
+      # Проверить!
+      - name: Download Inno Setup
+        run: |
+          Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile "InnoSetup.exe"
+          Start-Process -FilePath "InnoSetup.exe" -ArgumentList "/SILENT" -Wait
+
+      - name: Create Installer
+        run: |
+          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: WinUI-App-Test
-          path: ./output
+          name: WinUI-App-Installer
+          path: ./GTAJournalInstaller.exe
