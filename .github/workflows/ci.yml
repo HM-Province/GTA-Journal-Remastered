@@ -40,9 +40,10 @@ jobs:
 
       # Проверить!
       - name: Download Inno Setup
-        run: |
-          Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile "InnoSetup.exe"
-          Start-Process -FilePath "InnoSetup.exe" -ArgumentList "/SILENT" -Wait
+        run: Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile "InnoSetup.exe"
+
+      - name: Install Inno Setup
+        run: Start-Process -FilePath "InnoSetup.exe" -ArgumentList "/SILENT" -Wait
 
       - name: Create Installer
         run: |
