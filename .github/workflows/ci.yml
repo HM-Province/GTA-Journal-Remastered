@@ -55,7 +55,13 @@ jobs:
       #  run: |
       #    "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
 
-      - name: Upload artifacts
+      - name: Upload output artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: WinUI-App-Output
+          path: ./output
+
+      - name: Upload installer artifacts
         uses: actions/upload-artifact@v4
         with:
           name: WinUI-App-Installer
