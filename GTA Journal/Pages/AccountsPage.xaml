@@ -11,8 +11,8 @@
     <Grid Margin="20, 20, 20, 20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -30,8 +30,9 @@
             </Button>
         </Grid>
 
+        <TextBlock Grid.Row="1" Style="{StaticResource CaptionTextBlockStyle}">Выбранный пользователь помечается меткой</TextBlock>
 
-        <Grid Grid.Row="1" Margin="0, 20, 0, 0">
+        <Grid Grid.Row="2" Margin="0, 20, 0, 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
@@ -46,7 +47,7 @@
                 <ProgressRing IsActive="True" />
             </StackPanel>
 
-            <ListView Grid.Row="0" Visibility="Collapsed" x:Name="UserListView">
+            <ListView Grid.Row="0" SelectionChanged="UserListView_SelectionChange" Visibility="Collapsed" x:Name="UserListView">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -68,14 +69,9 @@
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Button Style="{StaticResource AccentButtonStyle}">
-                                    <FontIcon Glyph="&#xE748;" ToolTipService.ToolTip="Выбрать этот аккаунт" />
-                                </Button>
-                                <Button Margin="10,0,0,0">
-                                    <FontIcon Glyph="&#xE74D;" ToolTipService.ToolTip="Удалить аккаунт" />
-                                </Button>
-                            </StackPanel>
+                            <Button Grid.Column="1" Margin="10,0,0,0" Click="UserListViewDeleteUser_Click" Tag="{Binding}">
+                                <FontIcon Glyph="&#xE74D;" ToolTipService.ToolTip="Удалить аккаунт" />
+                            </Button>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -88,6 +84,10 @@
 
                     <CheckBox x:Name="SavePasswordCheckBox" Content="Сохранить пароль (не безопасно)" Margin="0,10,0,0" />
                 </StackPanel>
+            </ContentDialog>
+
+            <ContentDialog x:Name="DeleteAccountDialog" Title="Удаление аккаунта" PrimaryButtonText="Да" PrimaryButtonStyle="{StaticResource AccentButtonStyle}" CloseButtonText="Отмена">
+                <TextBlock>Вы уверены, что хотите удалить аккаунт из приложения?</TextBlock>
             </ContentDialog>
         </Grid>
     </Grid>

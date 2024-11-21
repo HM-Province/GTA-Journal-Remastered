@@ -125,6 +125,33 @@ namespace GTA_Journal.Database
                 return false;
             }
         }
+
+        public static bool DeleteUser(int userId)
+        {
+            try
+            {
+                using (SqliteConnection db = new($"Data Source={GetDbPath()}"))
+                {
+                    db.Open();
+
+                    var tableCommand = @"
+                        DELETE FROM users WHERE id = @id
+                    ";
+                    using var command = new SqliteCommand(tableCommand, db);
+
+                    command.Parameters.AddWithValue("@id", userId);
+
+                    command.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Failed to delete user from database");
+                return false;
+            }
+        }
     }
 
     public class User

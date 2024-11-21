@@ -52,6 +52,9 @@ namespace GTA_Journal.Pages
         private void LoadData()
         {
             var users = DataAccess.GetUsers();
+            var viewModel = (App.Current as App).GlobalState;
+            var settings = SettingsRepository.GetSettings();
+
             LoadingPanel.Visibility = Visibility.Collapsed;
 
             if (users.Count == 0)
@@ -64,6 +67,10 @@ namespace GTA_Journal.Pages
                 NoAccountsPanel.Visibility = Visibility.Collapsed;
                 UserListView.Visibility = Visibility.Visible;
                 UserListView.ItemsSource = users;
+
+                var user = UserListView.Items.Where(user => (user as User).Id == settings.CurrentUserId).FirstOrDefault();
+                if (user != null)
+                    UserListView.SelectedItem = user;
             }
         }
 
@@ -104,6 +111,37 @@ namespace GTA_Journal.Pages
                     info.CurrentUser.IsAdmin,
                     credentials.Expires ?? DateTime.Now
                 );
+            }
+
+            LoadData();
+        }
+
+        private void UserListView_SelectionChange(object sender, SelectionChangedEventArgs e)
+        {
+            var settings = SettingsRepository.GetSettings();
+            var viewModel = (App.Current as App).GlobalState;
+
+            var selectedUser = UserListView.SelectedItem as User;
+            if (selectedUser != null)
+            {
+                settings.CurrentUserId = selectedUser.Id;
+                SettingsRepository.SaveSettingsChanges();
+            }
+        }
+
+        private async void UserListViewDeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+            var result = await DeleteAccountDialog.ShowAsync();
+            SetLoading();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                var button = sender as Button;
+                var user = button.Tag as User;
+                if (user != null)
+                {
+                    DataAccess.DeleteUser(user.Id);
+                }
             }
 
             LoadData();
