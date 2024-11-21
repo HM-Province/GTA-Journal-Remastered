@@ -11,19 +11,75 @@
     <Grid Margin="20, 20, 20, 20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Аккаунты" Style="{StaticResource TitleLargeTextBlockStyle}"></TextBlock>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" Text="Аккаунты" Style="{StaticResource TitleLargeTextBlockStyle}"></TextBlock>
+            <Button Click="AddAccountButton_Click" Margin="0,10,0,0" Grid.Column="1" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE8FA;" />
+                    <TextBlock Text="Добавить аккаунт" Margin="8,0,0,0" />
+                </StackPanel>
+            </Button>
+        </Grid>
 
-        <Button Click="AddAccountButton_Click" Grid.Row="1" Margin="0,10,0,10">Добавить аккаунт</Button>
-        
-        <Grid Grid.Row="2" Margin="0, 10, 0, 0">
+
+        <Grid Grid.Row="1" Margin="0, 20, 0, 0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
+            <StackPanel x:Name="NoAccountsPanel" Visibility="Collapsed" Grid.Row="0" VerticalAlignment="Center">
+                <FontIcon HorizontalAlignment="Center" Margin="10" Glyph="&#xE783;" />
+                <TextBlock HorizontalAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}">Аккаунтов нет</TextBlock>
+            </StackPanel>
+
+            <StackPanel x:Name="LoadingPanel" Grid.Row="0" VerticalAlignment="Center">
+                <ProgressRing IsActive="True" />
+            </StackPanel>
+
+            <ListView Grid.Row="0" Visibility="Collapsed" x:Name="UserListView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <PersonPicture Height="45" VerticalAlignment="Center" ProfilePicture="{Binding AvatarUrl}" Margin="10" DisplayName="{Binding Username}" />
+                                <StackPanel VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}" Text="{Binding Username}" />
+                                        <TextBlock VerticalAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}" Margin="3,0,0,0" Visibility="{Binding IsAdmin}" Text="(Админ)" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}" Text="Время окончания:" />
+                                        <TextBlock VerticalAlignment="Center" Margin="3,0,0,0" Style="{StaticResource CaptionTextBlockStyle}" Text="{Binding Expires}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button Style="{StaticResource AccentButtonStyle}">
+                                    <FontIcon Glyph="&#xE748;" ToolTipService.ToolTip="Выбрать этот аккаунт" />
+                                </Button>
+                                <Button Margin="10,0,0,0">
+                                    <FontIcon Glyph="&#xE74D;" ToolTipService.ToolTip="Удалить аккаунт" />
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
             <ContentDialog x:Name="AddAccountDialog" IsPrimaryButtonEnabled="False" Title="Добавление аккаунта" PrimaryButtonText="Войти" PrimaryButtonStyle="{StaticResource AccentButtonStyle}" CloseButtonText="Закрыть">
                 <StackPanel Margin="0,10,0,0">

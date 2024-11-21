@@ -1,3 +1,4 @@
+using GTA_Journal.Database;
 using GTA_Journal.Repositories;
 using GTA_Journal.Utils;
 using Microsoft.UI.Xaml;
@@ -44,11 +45,39 @@ namespace GTA_Journal.Pages
         public AccountsPage()
         {
             this.InitializeComponent();
+
+            LoadData();
+        }
+
+        private void LoadData()
+        {
+            var users = DataAccess.GetUsers();
+            LoadingPanel.Visibility = Visibility.Collapsed;
+
+            if (users.Count == 0)
+            {
+                NoAccountsPanel.Visibility = Visibility.Visible;
+                UserListView.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                NoAccountsPanel.Visibility = Visibility.Collapsed;
+                UserListView.Visibility = Visibility.Visible;
+                UserListView.ItemsSource = users;
+            }
+        }
+
+        private void SetLoading()
+        {
+            LoadingPanel.Visibility = Visibility.Visible;
+            NoAccountsPanel.Visibility = Visibility.Collapsed;
+            UserListView.Visibility = Visibility.Collapsed;
         }
 
         private async void AddAccountButton_Click(object sender, RoutedEventArgs e)
         {
             var result = await AddAccountDialog.ShowAsync();
+            SetLoading();
 
             if (result == ContentDialogResult.Primary)
             {
@@ -59,8 +88,25 @@ namespace GTA_Journal.Pages
                     return;
                 }
 
-                
+                var info = await JournalRepository.GetMainPageInfo(credentials.UserId, credentials.UsId);
+                if (info == null)
+                {
+                    AddAccountButton_Click(sender, e);
+                    return;
+                }
+
+                DataAccess.AddUser(
+                    credentials.UserId,
+                    credentials.UsId,
+                    info.CurrentUser.Username,
+                    SavePasswordCheckBox.IsChecked == true ? PasswordTextBox.Password : "",
+                    info.CurrentUser.AvatarUrl,
+                    info.CurrentUser.IsAdmin,
+                    credentials.Expires ?? DateTime.Now
+                );
             }
+
+            LoadData();
         }
 
         private void AddAccountFields_TextChanged(object sender, object e)

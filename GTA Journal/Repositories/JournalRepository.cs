@@ -9,7 +9,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Policy;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Windows.Devices.Power;
 using Windows.Foundation.Collections;
 
 namespace GTA_Journal.Repositories
@@ -18,11 +20,40 @@ namespace GTA_Journal.Repositories
     {
         private const string _journalEndpoint = "https://journal.gtajournal.online";
 
+        public enum UserStatus
+        {
+            Online, AFK, Offline
+        }
+
         public class UserCredentials
         {
             public int UserId { get; set; }
             public string UsId { get; set; }
             public DateTime? Expires { get; set; }
+        }
+
+        public class CurrentUserInfo
+        {
+            public string Username { get; set; }
+            public string AvatarUrl { get; set; }
+            public bool IsAdmin { get; set; }
+            public UserStatus Status { get; set; }
+        }
+
+        public class MainPageUserInfo
+        {
+            public string Username { get; set; }
+            public string AvatarUrl { get; set; }
+            public string Link { get; set; }
+            public bool IsAdmin { get; set; }
+            public UserStatus Status { get; set; }
+        }
+
+        public class MainPageInfo
+        {
+            public int ServerId { get; set; }
+            public CurrentUserInfo CurrentUser { get; set; }
+            public List<MainPageUserInfo> Users { get; set; }
         }
 
         public static async Task<UserCredentials> GetUserCredentials(string login, string password)
@@ -87,21 +118,55 @@ namespace GTA_Journal.Repositories
 
         }
 
-        public static async void GetMainPageInfo(int userId, string usId)
+        public static async Task<MainPageInfo> GetMainPageInfo(int userId, string usId)
         {
-            using (var client = GetHttpClient(userId, usId))
+            try
             {
+                using var client = GetHttpClient(userId, usId);
                 string response = await client.GetStringAsync(_journalEndpoint + "/dashboard");
                 var htmlDocument = new HtmlDocument();
                 htmlDocument.LoadHtml(response);
 
-                var isAdmin = htmlDocument.DocumentNode.SelectSingleNode("//*[@class='profile']").InnerHtml.Contains("/user/add");
-                var username = htmlDocument.DocumentNode.SelectSingleNode("//p[@class='username']").InnerText;
-                var userStatus = htmlDocument.DocumentNode.SelectSingleNode("//*[@class='profile']//span[contains(@class, 'active')]").GetClasses().ToList()[1];
+                var currentUser = new CurrentUserInfo()
+                {
+                    Username = htmlDocument.DocumentNode.SelectSingleNode("//p[@class='username']").InnerText,
+                    AvatarUrl = _journalEndpoint + htmlDocument.DocumentNode.SelectSingleNode("//*[@class='profile']/div[@class='avatar']/img").GetAttributeValue("src", "/"),
+                    IsAdmin = htmlDocument.DocumentNode.SelectSingleNode("//*[@class='profile']").InnerHtml.Contains("/user/add"),
+                    Status = GetUserStatus(htmlDocument.DocumentNode.SelectSingleNode("//*[@class='profile']//span[contains(@class, 'active')]").GetClasses().ToList()[1])
+                };
 
-                Debug.WriteLine(isAdmin);
-                Debug.WriteLine(userStatus);
-                Debug.WriteLine(username);
+                int serverId = 0;
+                string serverPattern = @"server(\d+)";
+                Match match = Regex.Match(currentUser.AvatarUrl, serverPattern);
+
+                if (match.Success && match.Groups.Count > 1)
+                    serverId = int.Parse(match.Groups[1].Value);
+
+                var users = new List<MainPageUserInfo>();
+                var userCards = htmlDocument.DocumentNode.SelectNodes("//main//div[@class='col-12 col-lg-4']/div[@class='dash-scroll-block']/div[@class='item']");
+                foreach (var userCard in userCards)
+                {
+                    users.Add(new MainPageUserInfo()
+                    {
+                        Username = userCard.SelectSingleNode(".//a[@class='username']").InnerText,
+                        Status = GetUserStatus(userCard.SelectSingleNode(".//div[contains(@class, 'avatar')]").GetClasses().ToList()[1]),
+                        Link = userCard.SelectSingleNode(".//a[@class='username']").GetAttributeValue("href", ""),
+                        IsAdmin = userCard.SelectSingleNode(".//div[contains(@class, 'avatar')]/span[@class='admin']") != null,
+                        AvatarUrl = _journalEndpoint + userCard.SelectSingleNode(".//div[contains(@class, 'avatar')]/img").GetAttributeValue("src", "/")
+                    });
+                }
+
+                return new MainPageInfo()
+                {
+                    ServerId = serverId,
+                    CurrentUser = currentUser,
+                    Users = users
+                };
+            } 
+            catch (Exception ex)
+            {
+                Log.Error(ex, "GetMainPageInfo: Failed to get page info");
+                return null;
             }
 
         }
@@ -122,6 +187,19 @@ namespace GTA_Journal.Repositories
             client.DefaultRequestHeaders.Add("Cookie", $"id={userId}; usid={usId}");
 
             return client;
+        }
+
+        private static UserStatus GetUserStatus(string status)
+        {
+            switch(status)
+            {
+                case "online":
+                    return UserStatus.Online;
+                case "afk":
+                    return UserStatus.AFK;
+                default:
+                    return UserStatus.Offline;
+            }
         }
     }
 }
