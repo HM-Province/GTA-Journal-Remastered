@@ -19,6 +19,7 @@ using GTA_Journal.Pages;
 using GTA_Journal.Utils;
 using System.Speech.Synthesis;
 using Serilog;
+using Microsoft.UI.Xaml.Media.Animation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -34,7 +35,7 @@ namespace GTA_Journal
         {
             this.InitializeComponent();
 
-            contentFrame.Navigate(typeof(HomePage));
+            navigationView.SelectedItem = navigationView.MenuItems[0];
 
             StartTimer();
         }
@@ -55,7 +56,7 @@ namespace GTA_Journal
             if (selectedItem != null) {
                 string pageName = $"GTA_Journal.Pages.{selectedItem.Tag}";
                 Type pageType = Type.GetType(pageName);
-                contentFrame.Navigate(pageType);
+                ContentFrame.Navigate(pageType, null, new DrillInNavigationTransitionInfo());
 
                 Log.Information($"Navigated to {pageName}");
             }

@@ -92,6 +92,37 @@ namespace GTA_Journal.Database
             return list;
         }
 
+        public static User GetUserById(int userId)
+        {
+            var list = new List<User>();
+
+            using (SqliteConnection db = new($"Data Source={GetDbPath()}"))
+            {
+                db.Open();
+
+                var tableCommand = @"
+                    SELECT id, usid, username, password, avatar_url, is_admin, expires FROM users WHERE id = @id
+                ";
+                using var command = new SqliteCommand(tableCommand, db);
+                command.Parameters.AddWithValue("@id", userId);
+                var reader = command.ExecuteReader();
+                reader.Read();
+
+                return new User()
+                {
+                    Id = reader.GetInt32(0),
+                    UsId = reader.GetString(1),
+                    Username = reader.GetString(2),
+                    Password = reader.GetString(3),
+                    AvatarUrl = reader.GetString(4),
+                    IsAdmin = reader.GetInt16(5) != 0,
+                    Expires = DateTime.ParseExact(reader.GetString(6), "dd-MM-yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture)
+                };
+            }
+
+            return null;
+        }
+
         public static bool AddUser(int userId, string usId, string username, string password, string avatarUrl, bool isAdmin, DateTime expires)
         {
             try

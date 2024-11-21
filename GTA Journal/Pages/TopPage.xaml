@@ -8,7 +8,28 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="Топ 10" Style="{StaticResource TitleLargeTextBlockStyle}"></TextBlock>
+    <Grid Margin="20, 20, 20, 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Топ 10" Style="{StaticResource TitleLargeTextBlockStyle}"></TextBlock>
+
+        <StackPanel x:Name="LoadingPanel" Grid.Row="1" Visibility="Collapsed" VerticalAlignment="Center">
+            <ProgressRing IsActive="True" />
+        </StackPanel>
+
+        <StackPanel x:Name="NoAccountsPanel" Grid.Row="1" VerticalAlignment="Center">
+            <FontIcon FontSize="20" HorizontalAlignment="Center" Margin="10" Glyph="&#xEC7A;" />
+            <TextBlock HorizontalAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}">В разработке</TextBlock>
+            <TextBlock HorizontalAlignment="Center" Style="{StaticResource CaptionTextBlockStyle}">Следите за обновлениями</TextBlock>
+        </StackPanel>
+
+        <Grid Visibility="Collapsed"  Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+        </Grid>
     </Grid>
 </Page>

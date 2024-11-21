@@ -41,15 +41,6 @@ namespace GTA_Journal.Pages
 
             var viewModel = (App.Current as App).GlobalState;
 
-            if (!IsRunningAsAdministrator())
-            {
-                infoText.Text = "Запусти от имени администратора!";
-                onlineButton.IsEnabled = false;
-                afkButton.IsEnabled = false;
-                offlineButton.IsEnabled = false;
-            }
-            Status.Text = $"{viewModel.CurrentUserStatus.ToString()}";
-
             viewModel.PropertyChanged += OnStatusChanged;
         }
 
@@ -57,7 +48,7 @@ namespace GTA_Journal.Pages
         {
             if (e.PropertyName == "CurrentUserStatus")
             {
-                Status.Text = (App.Current as App).GlobalState.CurrentUserStatus.ToString();
+                // Status.Text = (App.Current as App).GlobalState.CurrentUserStatus.ToString();
             }
         }
 
@@ -65,21 +56,13 @@ namespace GTA_Journal.Pages
 
         private void ChangeStatus_OnClick(object sender, RoutedEventArgs e)
         {
-            if ((Button)e.OriginalSource == onlineButton) {
-                (App.Current as App).GlobalState.CurrentUserStatus = Models.GlobalStateModel.UserStatus.Online;
-            } else if ((Button)e.OriginalSource == afkButton) {
-                (App.Current as App).GlobalState.CurrentUserStatus = Models.GlobalStateModel.UserStatus.AFK;
-            } else {
-                (App.Current as App).GlobalState.CurrentUserStatus = Models.GlobalStateModel.UserStatus.Offline;
-            }
-
-            Thread.Sleep(10000);
-            ushort[] codes = { 0xC0, 0x53, 0x41, 0x59, 0x20, 0x47, 0x41, 0x59, 0x0D };
-
-            foreach (var code in codes)
-            {
-                KeyboardSimulator.PressKey(code, new Random().Next(30, 120));
-            }
+            //if ((Button)e.OriginalSource == onlineButton) {
+            //    (App.Current as App).GlobalState.CurrentUserStatus = Models.GlobalStateModel.UserStatus.Online;
+            //} else if ((Button)e.OriginalSource == afkButton) {
+            //    (App.Current as App).GlobalState.CurrentUserStatus = Models.GlobalStateModel.UserStatus.AFK;
+            //} else {
+            //    (App.Current as App).GlobalState.CurrentUserStatus = Models.GlobalStateModel.UserStatus.Offline;
+            //}
         }
     }
 }

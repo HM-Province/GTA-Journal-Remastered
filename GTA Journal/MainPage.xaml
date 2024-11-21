@@ -14,7 +14,7 @@
                         IsSettingsVisible="False" PaneTitle="GTA Journal" IsBackButtonVisible="Collapsed">
 
         <NavigationView.MenuItems>
-            <NavigationViewItem Content="Статус" Tag="HomePage" Icon="Home" />
+            <NavigationViewItem Content="Главная" Tag="HomePage" Icon="Home" />
             <NavigationViewItem Content="Топ 10" Tag="TopPage" Icon="ThreeBars" />
             <NavigationViewItem Content="Статистика" Tag="StatsPage" Icon="Clock" />
 
@@ -30,6 +30,13 @@
             <NavigationViewItem Content="Настройки" Tag="SettingsPage" Icon="Setting" />
         </NavigationView.FooterMenuItems>
 
-        <Frame x:Name="contentFrame" />
+        <Frame x:Name="ContentFrame">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition  />
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+
+        </Frame>
     </NavigationView>
 </Page>
